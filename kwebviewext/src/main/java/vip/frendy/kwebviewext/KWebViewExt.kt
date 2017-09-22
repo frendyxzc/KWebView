@@ -52,11 +52,6 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     @SuppressLint("JavascriptInterface")
-    fun addJavascriptInterface(listener: (Int, String) -> Unit) {
-        mWebView!!.addJavascriptInterface(JSInterface(listener), "android")
-    }
-
-    @SuppressLint("JavascriptInterface")
     fun addJavascriptInterface(jsInterface: JSInterface) {
         mWebView!!.addJavascriptInterface(jsInterface, "android")
     }
