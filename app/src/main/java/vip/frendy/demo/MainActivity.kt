@@ -13,6 +13,7 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        webView.setProgressDrawable(resources.getDrawable(R.drawable.progress_bar_demo))
         webView.loadUrl("http://frendy.vip/")
 
 //        webView.addJavascriptInterface(MyInterface { action, data ->

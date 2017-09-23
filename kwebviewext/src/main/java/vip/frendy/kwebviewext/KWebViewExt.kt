@@ -3,6 +3,7 @@ package com.iimedia.appbase.view.webview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
@@ -54,6 +55,14 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
     @SuppressLint("JavascriptInterface")
     fun addJavascriptInterface(jsInterface: JSInterface) {
         mWebView!!.addJavascriptInterface(jsInterface, "android")
+    }
+
+    fun setProgressDrawable(drawable: Drawable) {
+        mProgressBar?.progressDrawable = drawable
+    }
+
+    fun getProgressBar(): ProgressBar? {
+        return mProgressBar
     }
 
     private fun initWebview(url: String) {
