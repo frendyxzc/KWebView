@@ -1,4 +1,4 @@
-package com.iimedia.appbase.view.webview.interfaces
+package vip.frendy.kwebviewext.interfaces
 
 /**
  * Created by frendy on 2017/9/12.

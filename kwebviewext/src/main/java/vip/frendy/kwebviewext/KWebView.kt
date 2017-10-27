@@ -1,4 +1,4 @@
-package com.iimedia.appbase.view.webview
+package vip.frendy.kwebviewext
 
 import android.annotation.SuppressLint
 import android.content.Context

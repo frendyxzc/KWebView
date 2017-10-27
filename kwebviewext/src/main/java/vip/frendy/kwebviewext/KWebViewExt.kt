@@ -1,4 +1,4 @@
-package com.iimedia.appbase.view.webview
+package vip.frendy.kwebviewext
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,8 +10,7 @@ import android.view.View
 import android.webkit.*
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import com.iimedia.appbase.view.webview.interfaces.JSInterface
-import vip.frendy.kwebviewext.R
+import vip.frendy.kwebviewext.interfaces.JSInterface
 
 /**
  * Created by frendy on 2017/7/24.
@@ -21,6 +20,9 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
     internal var mWebView: KWebView? = null
     internal var mProgressBar: ProgressBar? = null
     internal var mNoImageMode: Boolean = false
+
+    internal var _onPageStarted: (url: String?) -> Unit = { }
+    internal var _onPageFinished: (url: String?) -> Unit = { }
 
     init { initView(context) }
 
@@ -65,6 +67,11 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
         return mProgressBar
     }
 
+    fun setPageListener(onPageStarted: (url: String?) -> Unit, onPageFinished: (url: String?) -> Unit) {
+        _onPageStarted = onPageStarted
+        _onPageFinished = onPageFinished
+    }
+
     private fun initWebview(url: String) {
 
         mWebView!!.loadUrl(url)
@@ -82,10 +89,12 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 // return super.shouldOverrideUrlLoading(view, url);
             }
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                _onPageStarted(url)
                 mProgressBar!!.visibility = View.VISIBLE
                 super.onPageStarted(view, url, favicon)
             }
             override fun onPageFinished(view: WebView?, url: String?) {
+                _onPageFinished(url)
                 mProgressBar!!.visibility = View.GONE
                 if(!mNoImageMode) view?.settings?.blockNetworkImage = false
                 super.onPageFinished(view, url)
