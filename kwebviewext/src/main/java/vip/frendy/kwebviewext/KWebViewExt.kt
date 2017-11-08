@@ -28,8 +28,8 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun initView(context: Context) {
         val view = View.inflate(context, R.layout.kweb_view_ext, this)
-        mWebView = view.findViewById(R.id.web_view) as KWebView
-        mProgressBar = view.findViewById(R.id.progress_bar) as ProgressBar
+        mWebView = view.findViewById<KWebView>(R.id.web_view)
+        mProgressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
     }
 
     fun loadUrl(url: String?) {
