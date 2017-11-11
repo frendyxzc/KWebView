@@ -3,6 +3,7 @@ package vip.frendy.kwebviewext
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.webkit.WebSettings
 import android.webkit.WebView
 
@@ -11,6 +12,8 @@ import android.webkit.WebView
  */
 
 class KWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : WebView(context, attrs, defStyleAttr) {
+
+    var isProceedTouchEvent = false
 
     init { init() }
 
@@ -46,5 +49,12 @@ class KWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 //        settings.javaScriptCanOpenWindowsAutomatically = true
     }
 
-
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if(isProceedTouchEvent) {
+            super.onTouchEvent(event)
+            return false
+        } else {
+            return super.onTouchEvent(event)
+        }
+    }
 }

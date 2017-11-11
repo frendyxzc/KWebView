@@ -72,6 +72,10 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
         _onPageFinished = onPageFinished
     }
 
+    fun setProceedTouchEvent(enable: Boolean) {
+        mWebView?.isProceedTouchEvent = enable
+    }
+
     private fun initWebview(url: String) {
 
         mWebView!!.loadUrl(url)
