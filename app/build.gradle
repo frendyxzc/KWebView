@@ -31,6 +31,9 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "org.jetbrains.anko:anko-common:$anko_version"
 
+    compile 'org.jsoup:jsoup:1.10.2'
+    compile 'com.github.frendyxzc:KExtension:0.0.4'
+
     compile project(':kwebviewext')
 }
 repositories {

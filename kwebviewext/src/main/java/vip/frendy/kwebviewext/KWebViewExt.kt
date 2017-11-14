@@ -20,9 +20,10 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
     internal var mWebView: KWebView? = null
     internal var mProgressBar: ProgressBar? = null
     internal var mNoImageMode: Boolean = false
+    internal var isLazyLoadImageEnable = true
 
     internal var _onPageStarted: (url: String?) -> Unit = { }
-    internal var _onPageFinished: (url: String?) -> Unit = { }
+    internal var _onPageFinished: (view: WebView?, url: String?) -> Unit = { view, url ->  }
 
     init { initView(context) }
 
@@ -67,7 +68,7 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
         return mProgressBar
     }
 
-    fun setPageListener(onPageStarted: (url: String?) -> Unit, onPageFinished: (url: String?) -> Unit) {
+    fun setPageListener(onPageStarted: (url: String?) -> Unit, onPageFinished: (view: WebView?, url: String?) -> Unit) {
         _onPageStarted = onPageStarted
         _onPageFinished = onPageFinished
     }
@@ -76,12 +77,16 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
         mWebView?.isProceedTouchEvent = enable
     }
 
+    fun setLazyLoadImageEnable(enable: Boolean) {
+        isLazyLoadImageEnable = enable
+    }
+
     private fun initWebview(url: String) {
 
         mWebView!!.loadUrl(url)
 
         // 懒加载图片
-        mWebView?.settings?.blockNetworkImage = true
+        if(isLazyLoadImageEnable) mWebView?.settings?.blockNetworkImage = true
 
         // 设置WebViewClient
         mWebView!!.setWebViewClient(object : WebViewClient() {
@@ -98,7 +103,7 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 super.onPageStarted(view, url, favicon)
             }
             override fun onPageFinished(view: WebView?, url: String?) {
-                _onPageFinished(url)
+                _onPageFinished(view, url)
                 mProgressBar!!.visibility = View.GONE
                 if(!mNoImageMode) view?.settings?.blockNetworkImage = false
                 super.onPageFinished(view, url)

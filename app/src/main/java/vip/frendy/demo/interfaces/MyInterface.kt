@@ -10,6 +10,7 @@ open class MyInterface(val listener: (Int, String) -> Unit): JSInterface() {
 
     companion object {
         val GOTO_UGC_DETAIL_ACTIVITY = 0
+        val PRASE_YOUTUBE_VIDEO_LIST = 1
     }
 
     @JavascriptInterface
@@ -17,4 +18,8 @@ open class MyInterface(val listener: (Int, String) -> Unit): JSInterface() {
         listener(GOTO_UGC_DETAIL_ACTIVITY, "")
     }
 
+    @JavascriptInterface
+    fun praseYoutubeVideoList(html: String) {
+        listener(PRASE_YOUTUBE_VIDEO_LIST, html)
+    }
 }
