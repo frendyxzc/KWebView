@@ -42,6 +42,10 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
         mWebView?.reload()
     }
 
+    fun loadData(data: String, mimeType: String, encoding: String) {
+        mWebView?.loadData(data, mimeType, encoding)
+    }
+
     fun setNoImageMode(enable: Boolean) {
         mNoImageMode = enable
         mWebView?.clearCache(true)
