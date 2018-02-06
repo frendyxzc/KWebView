@@ -20,6 +20,6 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.frendyxzc:KWebView:0.0.3'
+	compile 'com.github.frendyxzc:KWebView:0.0.6'
 }
 ```
