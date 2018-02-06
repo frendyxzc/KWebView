@@ -96,10 +96,10 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
         mWebView!!.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 // 使用自己的WebView组件来响应Url加载事件，而不是使用默认浏览器器加载页面
-                view?.loadUrl(url)
+                // view?.loadUrl(url)
                 // 相应完成返回true
-                return true
-                // return super.shouldOverrideUrlLoading(view, url);
+                // return true
+                return super.shouldOverrideUrlLoading(view, request)
             }
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 _onPageStarted(url)

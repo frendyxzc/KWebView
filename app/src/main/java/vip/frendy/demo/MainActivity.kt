@@ -12,7 +12,7 @@ import vip.frendy.extension.ext.postDelayedToUI
  */
 class MainActivity: AppCompatActivity() {
 
-    val URL_VIDEO_LIST = "https://www.youtube.com/results?sp=EgIQAVAU&search_query=%E8%B0%A2%E9%9C%86%E9%94%8B"
+    val URL_VIDEO_LIST = "https://www.youtube.com/results?sp=EgIQAVAU&search_query=谢霆锋&p=1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,13 +44,17 @@ class MainActivity: AppCompatActivity() {
             when(action) {
                 MyInterface.PRASE_YOUTUBE_VIDEO_LIST -> {
                     val doc = Jsoup.parse(data)
-                    val content = doc.getElementById("content")
-                    val list = content.getElementsByClass("_mzjb _makb _mbkb _mggc")
-                    for (item in list) {
-                        val elements = item.getElementsByClass("_mzgc")
-                        val links = item.getElementsByTag("a")
+                    val list = doc.getElementsByTag("a")
 
-                        Log.i("JSOUP", "** " + links.get(0).attr("href") + " | " + elements.text())
+                    for(item in list) {
+                        val href = item.attr("href")
+                        val label = item.attr("aria-label").split(" - ")[0]
+
+                        if(href.contains("/watch?v")) {
+                            val id = href.replace("/watch?v=", "")
+
+                            Log.i("jsoup", "** id = ${id}, label = ${label}")
+                        }
                     }
                 }
             }
@@ -58,7 +62,7 @@ class MainActivity: AppCompatActivity() {
         webView.setPageListener({}, { view, url ->
             postDelayedToUI({
                 view?.loadUrl("javascript:window.android.praseYoutubeVideoList(document.body.innerHTML);")
-            }, 5000)
+            }, 1000)
         })
         webView.loadUrl(URL_VIDEO_LIST)
     }
