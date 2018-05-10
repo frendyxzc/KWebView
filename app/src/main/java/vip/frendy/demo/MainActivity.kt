@@ -12,14 +12,16 @@ import vip.frendy.extension.ext.postDelayedToUI
  */
 class MainActivity: AppCompatActivity() {
 
+    val URL_DEFAULT = "http://frendy.vip/"
     val URL_VIDEO_LIST = "https://www.youtube.com/results?sp=EgIQAVAU&search_query=谢霆锋&p=1"
+    val URL_TEST = "https://www.thestartmagazine.com/feed/summary?isDesktop=false&publisherId=AmitG-Test&key=c3m1HOi41aZMgJ6WAPBef3cvv26Gw3Tn&vendor=365scores&genericDimension=WorldCup&countryCode=UK&language=en"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         webView.setProgressDrawable(resources.getDrawable(R.drawable.progress_bar_demo))
-//        webView.loadUrl("http://frendy.vip/")
+        webView.loadUrl(URL_TEST)
 
 //        webView.addJavascriptInterface(MyInterface { action, data ->
 //            when(action) {
@@ -39,31 +41,31 @@ class MainActivity: AppCompatActivity() {
 //            Log.i("", "** load ${url}, cost : ${endTime - startTime}")
 //        })
 
-        webView.setLazyLoadImageEnable(false)
-        webView.addJavascriptInterface(MyInterface { action, data ->
-            when(action) {
-                MyInterface.PRASE_YOUTUBE_VIDEO_LIST -> {
-                    val doc = Jsoup.parse(data)
-                    val list = doc.getElementsByTag("a")
-
-                    for(item in list) {
-                        val href = item.attr("href")
-                        val label = item.attr("aria-label").split(" - ")[0]
-
-                        if(href.contains("/watch?v")) {
-                            val id = href.replace("/watch?v=", "")
-
-                            Log.i("jsoup", "** id = ${id}, label = ${label}")
-                        }
-                    }
-                }
-            }
-        })
-        webView.setPageListener({}, { view, url ->
-            postDelayedToUI({
-                view?.loadUrl("javascript:window.android.praseYoutubeVideoList(document.body.innerHTML);")
-            }, 1000)
-        })
-        webView.loadUrl(URL_VIDEO_LIST)
+//        webView.setLazyLoadImageEnable(false)
+//        webView.addJavascriptInterface(MyInterface { action, data ->
+//            when(action) {
+//                MyInterface.PRASE_YOUTUBE_VIDEO_LIST -> {
+//                    val doc = Jsoup.parse(data)
+//                    val list = doc.getElementsByTag("a")
+//
+//                    for(item in list) {
+//                        val href = item.attr("href")
+//                        val label = item.attr("aria-label").split(" - ")[0]
+//
+//                        if(href.contains("/watch?v")) {
+//                            val id = href.replace("/watch?v=", "")
+//
+//                            Log.i("jsoup", "** id = ${id}, label = ${label}")
+//                        }
+//                    }
+//                }
+//            }
+//        })
+//        webView.setPageListener({}, { view, url ->
+//            postDelayedToUI({
+//                view?.loadUrl("javascript:window.android.praseYoutubeVideoList(document.body.innerHTML);")
+//            }, 1000)
+//        })
+//        webView.loadUrl(URL_VIDEO_LIST)
     }
 }
