@@ -25,12 +25,19 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
     internal var _onPageStarted: (url: String?) -> Unit = { }
     internal var _onPageFinished: (view: WebView?, url: String?) -> Unit = { view, url ->  }
 
+    internal var mWebViewClient: WebViewClient? = null
+    internal var mWebChromeClient: WebChromeClient? = null
+
     init { initView(context) }
 
     private fun initView(context: Context) {
         val view = View.inflate(context, R.layout.kweb_view_ext, this)
         mWebView = view.findViewById<KWebView>(R.id.web_view)
         mProgressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
+    }
+
+    fun getWebView(): KWebView? {
+        return mWebView
     }
 
     fun loadUrl(url: String?) {
@@ -85,6 +92,14 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
         isLazyLoadImageEnable = enable
     }
 
+    fun setWebViewClient(client: WebViewClient?) {
+        mWebViewClient = client
+    }
+
+    fun setWebChromeClient(client: WebChromeClient?) {
+        mWebChromeClient = client
+    }
+
     private fun initWebview(url: String) {
 
         mWebView!!.loadUrl(url)
@@ -93,7 +108,7 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if(isLazyLoadImageEnable) mWebView?.settings?.blockNetworkImage = true
 
         // 设置WebViewClient
-        mWebView!!.setWebViewClient(object : WebViewClient() {
+        mWebView!!.webViewClient = mWebViewClient ?: object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 // 使用自己的WebView组件来响应Url加载事件，而不是使用默认浏览器器加载页面
                 // view?.loadUrl(url)
@@ -119,10 +134,10 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
 //				view.loadData(errorHtml, "text/html; charset=UTF-8", null);
                 super.onReceivedError(view, request, error)
             }
-        })
+        }
 
         // 设置WebChromeClient
-        mWebView!!.setWebChromeClient(object : WebChromeClient() {
+        mWebView!!.webChromeClient = mWebChromeClient ?: object : WebChromeClient() {
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
                 return super.onJsAlert(view, url, message, result)
             }
@@ -139,7 +154,7 @@ class KWebViewExt @JvmOverloads constructor(context: Context, attrs: AttributeSe
             override fun onReceivedTitle(view: WebView?, title: String?) {
                 super.onReceivedTitle(view, title)
             }
-        })
+        }
 
         mWebView!!.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
